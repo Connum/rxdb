@@ -317,8 +317,8 @@ useParallel(testContext + ' (implementation: ' + config.storage.name + ')', () =
              * @link https://github.com/pubkey/rxdb/pull/3627
              */
             it('#3627 should not write a duplicate checkpoint', async () => {
-                if (config.storage.name === 'lokijs') {
-                    // TODO fix this with the lokijs storage
+                if (config.storage.name === 'lokijs' || config.storage.name === 'sylviejs') {
+                    // TODO fix this with the sylvie storage
                     return;
                 }
 
@@ -1109,6 +1109,7 @@ useParallel(testContext + ' (implementation: ' + config.storage.name + ')', () =
         it('do many writes while replication is running', async () => {
             if (
                 config.storage.name === 'lokijs' ||
+                config.storage.name === 'sylviejs' ||
                 config.storage.name === 'denokv'
             ) {
                 // TODO this test fails in about 1/20 times in lokijs

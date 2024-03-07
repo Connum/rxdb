@@ -25,6 +25,7 @@ export type * from './plugins/migration.d.ts';
 export type * from './plugins/backup.d.ts';
 export type * from './plugins/cleanup.d.ts';
 export type * from './plugins/lokijs.d.ts';
+export type * from './plugins/sylviejs.d.ts';
 export type * from './plugins/dexie.d.ts';
 export type * from './plugins/reactivity.d.ts';
 export type * from './plugins/update.d.ts';

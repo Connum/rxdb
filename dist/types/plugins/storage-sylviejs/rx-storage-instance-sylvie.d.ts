@@ -1,0 +1,31 @@
+import { Observable } from 'rxjs';
+import type { RxStorageInstance, SylvieSettings, RxStorageChangeEvent, RxDocumentData, BulkWriteRow, RxStorageBulkWriteResponse, RxStorageQueryResult, RxJsonSchema, SylvieStorageInternals, RxStorageInstanceCreationParams, SylvieDatabaseSettings, SylvieLocalDatabaseState, EventBulk, StringKeys, RxConflictResultionTask, RxConflictResultionTaskSolution, RxStorageDefaultCheckpoint, RxStorageCountResult, PreparedQuery } from '../../types/index.d.ts';
+import type { RxStorageSylvie } from './rx-storage-sylviejs.ts';
+export declare class RxStorageInstanceSylvie<RxDocType> implements RxStorageInstance<RxDocType, SylvieStorageInternals, SylvieSettings, RxStorageDefaultCheckpoint> {
+    readonly databaseInstanceToken: string;
+    readonly storage: RxStorageSylvie;
+    readonly databaseName: string;
+    readonly collectionName: string;
+    readonly schema: Readonly<RxJsonSchema<RxDocumentData<RxDocType>>>;
+    readonly internals: SylvieStorageInternals;
+    readonly options: Readonly<SylvieSettings>;
+    readonly databaseSettings: SylvieDatabaseSettings;
+    readonly primaryPath: StringKeys<RxDocumentData<RxDocType>>;
+    private changes$;
+    readonly instanceId: number;
+    closed?: Promise<void>;
+    constructor(databaseInstanceToken: string, storage: RxStorageSylvie, databaseName: string, collectionName: string, schema: Readonly<RxJsonSchema<RxDocumentData<RxDocType>>>, internals: SylvieStorageInternals, options: Readonly<SylvieSettings>, databaseSettings: SylvieDatabaseSettings);
+    bulkWrite(documentWrites: BulkWriteRow<RxDocType>[], context: string): Promise<RxStorageBulkWriteResponse<RxDocType>>;
+    findDocumentsById(ids: string[], deleted: boolean): Promise<RxDocumentData<RxDocType>[]>;
+    query(preparedQueryOriginal: PreparedQuery<RxDocType>): Promise<RxStorageQueryResult<RxDocType>>;
+    count(preparedQuery: PreparedQuery<RxDocType>): Promise<RxStorageCountResult>;
+    getAttachmentData(_documentId: string, _attachmentId: string, _digest: string): Promise<string>;
+    changeStream(): Observable<EventBulk<RxStorageChangeEvent<RxDocumentData<RxDocType>>, RxStorageDefaultCheckpoint>>;
+    cleanup(minimumDeletedTime: number): Promise<boolean>;
+    close(): Promise<void>;
+    remove(): Promise<void>;
+    conflictResultionTasks(): Observable<RxConflictResultionTask<RxDocType>>;
+    resolveConflictResultionTask(_taskSolution: RxConflictResultionTaskSolution<RxDocType>): Promise<void>;
+}
+export declare function createSylvieLocalState<RxDocType>(params: RxStorageInstanceCreationParams<RxDocType, SylvieSettings>, databaseSettings: SylvieDatabaseSettings): Promise<SylvieLocalDatabaseState>;
+export declare function createSylvieStorageInstance<RxDocType>(storage: RxStorageSylvie, params: RxStorageInstanceCreationParams<RxDocType, SylvieSettings>, databaseSettings: SylvieDatabaseSettings): Promise<RxStorageInstanceSylvie<RxDocType>>;

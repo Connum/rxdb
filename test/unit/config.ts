@@ -1,6 +1,7 @@
 /// <reference path="../../node_modules/@types/mocha/index.d.ts" />
 
 import { getRxStorageLoki } from '../../plugins/storage-lokijs/index.mjs';
+import { getRxStorageSylvie } from '../../plugins/storage-sylviejs/index.mjs';
 import {
     getRxStorageDexie
 } from '../../plugins/storage-dexie/index.mjs';
@@ -23,6 +24,8 @@ import {
 } from 'fake-indexeddb';
 import LokiFsStructuredAdapter from 'lokijs/src/loki-fs-structured-adapter.js';
 import LokiIncrementalIndexedDBAdapter from 'lokijs/src/incremental-indexeddb-adapter.js';
+import { FsStructuredAdapter } from 'sylviejs/dist/storage-adapter/fs-structured-adapter.js';
+import { IncrementalIndexedDBAdapter } from 'sylviejs/dist/storage-adapter/incremental-indexeddb-adapter.js';
 import parallel from 'mocha.parallel';
 
 import { createRequire } from 'node:module';
@@ -157,6 +160,35 @@ export function getStorage(storageKey: string): RxTestStorage {
                                 adapter: new LokiIncrementalIndexedDBAdapter()
                             }),
                             description: 'loki+incremental-indexeddb'
+                        };
+                    }
+                },
+                hasPersistence: true,
+                hasMultiInstance: true,
+                hasAttachments: false,
+                hasReplication: true
+            };
+            break;
+        case 'sylviejs':
+            return {
+                name: storageKey,
+                getStorage: () => getRxStorageSylvie(),
+                getPerformanceStorage() {
+                    if (isNode) {
+                        // Node.js
+                        return {
+                            storage: getRxStorageSylvie({
+                                adapter: new FsStructuredAdapter()
+                            }),
+                            description: 'sylvie+fs-structured-adapter'
+                        };
+                    } else {
+                        // browser
+                        return {
+                            storage: getRxStorageSylvie({
+                                adapter: new IncrementalIndexedDBAdapter()
+                            }),
+                            description: 'sylvie+incremental-indexeddb'
                         };
                     }
                 },
