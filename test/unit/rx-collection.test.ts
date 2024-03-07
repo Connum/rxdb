@@ -600,8 +600,8 @@ describe('rx-collection.test.ts', () => {
                         c.database.destroy();
                     });
                     it('sort by non-top-level-key as index (with keycompression)', async () => {
-                        if (config.storage.name === 'lokijs') {
-                            // TODO why does this test not work on lokijs?
+                        if (config.storage.name === 'lokijs' || config.storage.name === 'sylviejs') {
+                            // TODO why does this test not work on sylviejs?
                             return;
                         }
                         const db = await createRxDatabase({

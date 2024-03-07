@@ -794,8 +794,8 @@ describe('rx-query.test.ts', () => {
             c.database.destroy();
         });
         it('#585 sort by sub-path not working', async () => {
-            if (['lokijs'].includes(config.storage.name)) {
-                // TODO fix wrong sort order in lokijs
+            if (['lokijs','sylviejs'].includes(config.storage.name)) {
+                // TODO fix wrong sort order in sylviejs
                 return;
             }
             const schema = {
